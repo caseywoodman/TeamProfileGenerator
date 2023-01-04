@@ -7,6 +7,7 @@
 // Generate HTML File
 const inquirer = require("inquirer");
 const fs = require("fs");
+const Manager = require("./lib/Manager");
 const team = [];
 
 // Create Manager
@@ -40,8 +41,9 @@ function createManager() {
     .then((answers) => {
       console.log(answers);
       // Create a new Manager Object from the manager class.
-
+      const manager = new Manager(answers.managerName, answers.managerID, answers.managerEmail, answers.managerNumber);
       // Push manager on to team array.
+      team.push(manager);
       createTeam();
     });
 }
@@ -151,10 +153,10 @@ const generateHTML = (team) => `<!DOCTYPE html>
     <title>Team Profile Builder</title>
 </head>
 <body>
-<div>${managerName} </div>
-<div>${managerID} </div>
-<div>${managerEmail} </div>
-<div>${managerNumber} </div>
+<div>${team[0].getName()} </div>
+<div>${team[0].getId()} </div>
+<div>${team[0].getEmail()} </div>
+<div>${team[0].getOfficeNumber()} </div>
 </body>
 </html>`;
 // Ask Questions to Populate HTML
