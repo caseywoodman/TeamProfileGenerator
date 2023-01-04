@@ -1,68 +1,162 @@
+// Enter the team manager's name, employee ID, email address, and office number
+// Menu to add engineer/intern/or finish building team
+// Select engineer: I am prompted to enter the engineer's name, ID, email, and GitHub username,
+// I am taken back to the menu
+// Select intern: enter the intern's name, ID, email, and school,
+// Select Finish
+// Generate HTML File
 const inquirer = require("inquirer");
 const fs = require("fs");
-// ---------------------------------------------- NODE COMMAND PROMPTS -----------------------------------------------------
+const team = [];
 
-inquirer
-  .prompt([
-    // Prompt for team manager’s name, employee ID, email address, and office number
-    {
-      type: "input",
-      message: "What is your Manager's Name?",
-      name: "managerName",
-    },
-    {
-      type: "input",
-      message: "What is your Manager's Employee ID?",
-      name: "managerID",
-    },
-    {
-      type: "input",
-      message: "What is your Manager's Email Address?",
-      name: "managerEmail",
-    },
-    {
-      type: "input",
-      message: "What is your Manager's Office Number?",
-      name: "managerNumber",
-    },
-    // Prompt menu to choose Engineer, Intern or Finish
+// Create Manager
+function createManager() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What is your manager's name?",
+        name: "managerName",
+      },
 
-    {
-      type: "list",
-      message: "Add Engineer or Intern, or are you finished",
-      choices: ["ADD ENGINEER", "ADD INTERN", "FINISHED"],
-      name: "mainMenu",
-    },
-  ])
-  .then((answers) => {
-    console.log(answers);
-    const parseHTML = generateHTML(answers);
-    // Write to File
-    fs.writeFile("team.html", parseHTML, (err) => (err ? console.error(err) : console.log("Success!")));
-  });
+      {
+        type: "input",
+        message: "What is your manager's employee ID?",
+        name: "managerID",
+      },
 
-// SELECT ENGINEER: engineer’s name, ID, email, and GitHub username
-// Prompt menu to choose Engineer, Intern or Finish
+      {
+        type: "input",
+        message: "What is your manager's email?",
+        name: "managerEmail",
+      },
 
-// SELECT INTERN: intern’s name, ID, email, and school
-// Prompt menu to choose Engineer, Intern or Finish
+      {
+        type: "input",
+        message: "What is your manager's number?",
+        name: "managerNumber",
+      },
+    ])
+    .then((answers) => {
+      console.log(answers);
+      // Create a new Manager Object from the manager class.
 
-// ----------------------------------------------- GENERATE HTML ------------------------------------------------------------
-const generateHTML = ({ managerName, managerID, managerEmail, managerNumber }) => `<!DOCTYPE html>
+      // Push manager on to team array.
+      createTeam();
+    });
+}
+
+function createEngineer() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What is your Engineer's name?",
+        name: "engineerName",
+      },
+
+      {
+        type: "input",
+        message: "What is your Engineer's employee ID?",
+        name: "engineerID",
+      },
+
+      {
+        type: "input",
+        message: "What is your Engineer's email?",
+        name: "engineerEmail",
+      },
+
+      {
+        type: "input",
+        message: "What is your Engineer's Github?",
+        name: "engineerGithub",
+      },
+    ])
+    .then((answers) => {
+      console.log(answers);
+      // Create a new Manager Object from the manager class.
+
+      // Push manager on to team array.
+      createTeam();
+    });
+}
+
+function createIntern() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What is your Intern's name?",
+        name: "internName",
+      },
+
+      {
+        type: "input",
+        message: "What is your Intern's employee ID?",
+        name: "internID",
+      },
+
+      {
+        type: "input",
+        message: "What is your Intern's email?",
+        name: "internEmail",
+      },
+
+      {
+        type: "input",
+        message: "What is your Intern's School?",
+        name: "internSchool",
+      },
+    ])
+    .then((answers) => {
+      console.log(answers);
+      // Create a new Manager Object from the manager class.
+
+      // Push manager on to team array.
+      createTeam();
+    });
+}
+function createTeam() {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        message: "Add an Engineer or an Intern or Finish?",
+        name: "mainMenu",
+        choices: ["Engineer", "Intern", "Finish"],
+      },
+    ])
+    .then((answers) => {
+      console.log(answers);
+      if (answers.mainMenu === "Engineer") {
+        createEngineer();
+      } else if (answers.mainMenu === "Intern") {
+        createIntern();
+      } else {
+        const parseHTML = generateHTML(team);
+
+        // Write to File
+        fs.writeFile("team.html", parseHTML, (err) => (err ? console.error(err) : console.log("Success!")));
+      }
+    });
+}
+// Generate HTML
+const generateHTML = (team) => `<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team</title>
+    <title>Team Profile Builder</title>
 </head>
-
 <body>
-    <div>${managerName}</div>
-    <div>${managerID}</div>
-    <div>${managerEmail}</div>
-    <div>${managerNumber}</div>
+<div>${managerName} </div>
+<div>${managerID} </div>
+<div>${managerEmail} </div>
+<div>${managerNumber} </div>
 </body>
-
 </html>`;
+// Ask Questions to Populate HTML
+
+createManager();
